@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from item.models import Category, Item
 from .froms import SignupForm
 from django.contrib.auth import logout
@@ -13,6 +13,13 @@ def index(request):
     }
 
     return render(request, 'core/index.html', context=context)
+
+def category_products(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    item = Item.objects.filter(category=category)
+
+    return render(request, 'core/category_products.html', {'category': category,
+                                                                                'items': item})
 
 def contact(request):
     return render(request, 'core/contact.html')
