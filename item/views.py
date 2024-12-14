@@ -71,3 +71,11 @@ def edit(request, pk):
 
     form = EditItemForm()
     return render(request, 'item/form.html', context={'form': form, 'title': 'Edit item'})
+
+@login_required
+def buy(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    item.purchases += 1
+    item.save()
+
+    return render(request, 'item/detail.html', {'item': item})
