@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center">Cart<br>total price: {{ total_price }}</h2>
+
+    <div class="grid grid-cols-3 gap-3">
+    {% for item in cart_items %}
+            <div>
+                <a href="{% url 'core:cart_detail' item.product.id %}">
+                    <div>
+                      <img style="height:65vh;width:700px;" src="{{ item.product.image.url }}"
+                           class="rounded-t-xl">
+                    </div>
+
+                    <div class="p-6 bg-white rounded-b-xl">
+                        <h2 class="text-2xl">{{ item.product.name }}</h2>
+                        <p class="text-gray-500">price: {{ item.product.price }}</p>
+                        <p class="text-gray-500">quantity: {{ item.quantity }}</p>
+                    </div>
+                </a>
+            </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

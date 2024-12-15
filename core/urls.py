@@ -8,10 +8,17 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('contact/', views.contact, name='contact'),
+
     path('signup/', views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(template_name='core/login.html', authentication_form=LoginForm),
          name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('category/<int:category_id>/', views.category_products, name='category_products'),
+
+    path('category/<int:pk>/', views.category_products, name='category_products'),
+
+    path('cart_add/<int:pk>/', views.add_cart, name='add_cart'),
+    path('cart_remove/<int:pk>/', views.remove_cart, name='remove_cart'),
+    path('cart/', views.cart, name='cart'),
+    path('update/<int:pk>/<str:action>/', views.update_cart, name='update_cart'),
+    path('cart/<int:pk>/', views.cart_detail, name='cart_detail')
 ]

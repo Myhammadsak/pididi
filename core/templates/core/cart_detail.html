@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ item.name }}_cart{% endblock %}
+
+{% block content %}
+{% for item in cart_items %}
+<div class="grid grid-cols-5 gap-6">
+    <div class="col-span-3">
+        <img src="{{ item.product.image.url }}" class="rounded-xl">
+    </div>
+
+    <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+        <h1 class="mb-6 text-3xl">{{ item.product.name }}</h1>
+        {% if item.product.description %}
+            <p class="text-gray-700">
+                <strong class="text-gray-500">Description:</strong><br>
+                {{ item.product.description }}
+            </p>
+        {% endif %}
+
+        <p class="text-gray-500">Price: {{ item.product.price }}</p>
+        <p class="text-gray-500">Quantity: {{ item.quantity }}</p>
+        <p>Total price: {{ total_item_price }}</p>
+
+        <div>
+
+            <a class="inline-block mt-6 px-6 py-3 text-lg
+               font-semibold bg-blue-500 hover:bg-blue-700 text-white rounded-xl"
+               href="{% url 'core:update_cart' item.product.id 'add' %}">+</a>
+
+            <a class="inline-block mt-6 px-6 py-3 text-lg
+               font-semibold bg-blue-500 hover:bg-blue-700 text-white rounded-xl"
+               href="{% url 'core:update_cart' item.product.id 'remove' %}">-</a>
+
+            <a class="inline-block mt-6 px-6 py-3 text-lg
+               font-semibold bg-red-500 hover:bg-red-700 text-white rounded-xl"
+               href="{% url 'core:remove_cart' item.product.id %}">Delete</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
