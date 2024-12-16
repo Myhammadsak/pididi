@@ -1,9 +1,18 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from item.models import Item
 from .forms import NewItemForm, EditItemForm
-from .models import Item, Category
+from .models import Item, Category, PurchaseHistory
+
+
+def create_purchase_history(user, product, quantity=1):
+    PurchaseHistory.objects.create(
+        user=user,
+        image=product.image,
+        name=product.name,
+        price=product.price,
+        quantity=quantity
+    )
 
 
 def item(request):
@@ -74,8 +83,19 @@ def edit(request, pk):
 
 @login_required
 def buy(request, pk):
+    user = request.user
+    product = Item.objects.get(pk=pk)
+    quantity = int(request.POST.get('quantity', 1))
+    create_purchase_history(user, product, quantity)
+
     item = get_object_or_404(Item, pk=pk)
     item.purchases += 1
     item.save()
 
     return render(request, 'item/detail.html', {'item': item})
+
+@login_required
+def history(request):
+    history = PurchaseHistory.objects.filter(user=request.user).order_by('-created_at')
+
+    return render(request, 'item/history.html', {'history': history})

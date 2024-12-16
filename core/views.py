@@ -1,14 +1,28 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
-from item.models import Category, Item
+from item.models import Category, Item, PurchaseHistory
 from .models import Cart
 from .froms import SignupForm
 from django.contrib.auth import logout
 
 from django.utils import timezone
 from datetime import timedelta
+import pickle
 
+
+with open('/Users/holmuhammad/PycharmProjects/pythonProject6/model.pkl', 'rb') as f:
+    model = pickle.load(f)
+
+
+def create_purchase_history(user, product, quantity=1):
+    PurchaseHistory.objects.create(
+        user=user,
+        image=product.image,
+        name=product.name,
+        price=product.price,
+        quantity=quantity
+    )
 
 
 def index(request):
@@ -70,6 +84,7 @@ def remove_cart(request, pk):
 def cart(request):
     cart_items = Cart.objects.filter(user=request.user)
     total_price = sum(item.product.price * item.quantity for item in cart_items)
+
     return render(request, 'core/cart.html', {
         'cart_items': cart_items,
         'total_price': total_price
@@ -89,9 +104,25 @@ def update_cart(request, pk, action):
     cart_item.save()
     return redirect(f'/cart/{pk}/')
 
+@login_required
 def cart_detail(request, pk):
     product = get_object_or_404(Item, pk=pk)
     cart_items = Cart.objects.filter(user=request.user, product=product)
     total_item_price = sum(item.product.price * item.quantity for item in cart_items)
+
     return render(request, 'core/cart_detail.html', {'cart_items': cart_items,
                                                                         'total_item_price': total_item_price})
+
+@login_required
+def all_cart_buy(request):
+    cart_items = Cart.objects.filter(user=request.user)
+
+    for item in cart_items:
+        create_purchase_history(request.user, item.product, item.quantity)
+
+        new = get_object_or_404(Item, name=item.product)
+        new.purchases += 1
+        new.save()
+
+    cart_items.delete()
+    return redirect('/')
