@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'item.apps.ItemConfig',
     'dashboard.apps.DashboardConfig',
+    'feedback.apps.FeedbackConfig'
 ]
 
 MIDDLEWARE = [

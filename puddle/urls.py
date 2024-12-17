@@ -26,6 +26,7 @@ urlpatterns = [
     path('items/', include('item.urls')),
     path('admin/', admin.site.urls),
     path('dashboard/', include('dashboard.urls')),
+    path('feedback/', include('feedback.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
