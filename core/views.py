@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from item.models import Category, Item, PurchaseHistory
 from .models import Cart
-from .froms import SignupForm
+from .froms import SignupForm, FeedbackForm
 from django.contrib.auth import logout
 
 from django.utils import timezone
@@ -27,7 +27,7 @@ def create_purchase_history(user, product, quantity=1):
 
 def index(request):
     now = timezone.now()
-    week = now - timedelta(days=7)
+    week = now - timedelta(days=14)
     recent_products = Item.objects.filter(created_at__gte=week)
 
 
@@ -59,7 +59,7 @@ def signup(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('http://127.0.0.1:8000/')
+    return redirect('/')
 
 
 @login_required
@@ -126,3 +126,16 @@ def all_cart_buy(request):
 
     cart_items.delete()
     return redirect('/')
+
+
+def feedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    else:
+        form = FeedbackForm()
+
+    return render(request, 'core/feedback.html', {'form': form})
