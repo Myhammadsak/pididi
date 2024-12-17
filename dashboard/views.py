@@ -1,11 +1,14 @@
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator
 
-from item.models import Item
+from item.models import Item, Category
 from django.contrib.auth.models import User
-from .forms import UserForm
+from .forms import UserForm, EditItemForm, NewItemForm
 
 @login_required
 def index(request):

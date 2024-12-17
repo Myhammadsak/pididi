@@ -85,7 +85,6 @@ def edit(request, pk):
     else:
         form = EditItemForm(instance=item)
 
-    form = EditItemForm()
     return render(request, 'item/form.html', context={'form': form, 'title': 'Edit item'})
 
 @login_required

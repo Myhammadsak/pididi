@@ -11,9 +11,6 @@ from datetime import timedelta
 import pickle
 
 
-with open('/Users/holmuhammad/PycharmProjects/pythonProject6/model.pkl', 'rb') as f:
-    model = pickle.load(f)
-
 
 def create_purchase_history(user, product, quantity=1):
     PurchaseHistory.objects.create(
@@ -69,6 +66,7 @@ def add_cart(request, pk):
         user=request.user,
         product=product
     )
+
     if not created:
         cart_item.quantity += 1
         cart_item.save()
@@ -126,16 +124,3 @@ def all_cart_buy(request):
 
     cart_items.delete()
     return redirect('/')
-
-
-# def feedback(request):
-#     if request.method == 'POST':
-#         form = FeedbackForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('/')
-#
-#     else:
-#         form = FeedbackForm()
-#
-#     return render(request, 'core/feedback.html', {'form': form})
