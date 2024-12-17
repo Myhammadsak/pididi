@@ -44,7 +44,7 @@
 
         <div class="col-span-3">
             <div class="grid grid-cols-3 gap-3">
-                {% for item in items %}
+                {% for item in page_obj %}
                     <div>
                         <a href="{% url 'item:detail' item.id %}">
                             <div>
@@ -60,6 +60,40 @@
                     </div>
                 {% endfor %}
             </div>
+
+
+        <div class="pagination">
+            <span>
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+        </div>
+
+        <div class="mt-6">
+            {% if page_obj.has_previous %}
+                <a class="mt-6 py-4 px-8 text-lg bg-blue-500
+                 hover:bg-blue-700 rounded-xl text-white" href="?page=1">Первая</a>
+                <a class="mt-6 py-4 px-8 text-lg bg-blue-500 hover:bg-blue-700
+                 rounded-xl text-white" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <strong class="mt-6 py-4 px-8 text-lg bg-blue-500
+                    hover:bg-blue-700 rounded-xl text-white">{{ num }}</strong>
+                {% else %}
+                    <a class="mt-6 py-4 px-8 text-lg bg-blue-500
+                    hover:bg-blue-700 rounded-xl text-white" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="mt-6 py-4 px-8 text-lg bg-blue-500
+                hover:bg-blue-700 rounded-xl text-white" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                <a class="mt-6 py-4 px-8 text-lg bg-blue-500 hover:bg-blue-700
+                 rounded-xl text-white" href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+            {% endif %}
+        </div>
+
         </div>
     </div>
 {% endblock %}

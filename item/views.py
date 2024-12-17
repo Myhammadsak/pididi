@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 from django.db.models import Q
 from .forms import NewItemForm, EditItemForm
 from .models import Item, Category, PurchaseHistory
@@ -27,10 +28,16 @@ def item(request):
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
+    paginator = Paginator(items, 6)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'item/items.html', context={'items': items,
                                                        'query': query,
                                                        'categories': categories,
-                                                       'category_id': int(category_id)})
+                                                       'category_id': int(category_id),
+                                                       'page_obj': page_obj})
 
 def detail(request, pk):
 
