@@ -12,7 +12,7 @@
             <h2 class="mb-12">Products: {{ items.count }}</h2>
             <a href="{% url 'dashboard:edit' %}" class="px-6 py-3
                  text-lg font-semibold bg-blue-500 text-white rounded-xl hover:bg-blue-700">edit profile</a>
-            <a href="{% url 'dashboard:new_password' %}" class="text-lg font-semibold hover:text-gray-500">password reset</a>
+            <a href="{% url 'core:password_reset' %}" class="text-lg font-semibold hover:text-gray-500">password reset</a>
         </div>
 
     </div>

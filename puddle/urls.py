@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', include('dashboard.urls')),
     path('feedback/', include('feedback.urls')),
-    path('admin-custom/', custom_admin_site.urls)
+    path('admin-custom/', custom_admin_site.urls),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
