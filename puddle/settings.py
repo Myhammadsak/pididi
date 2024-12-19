@@ -28,7 +28,8 @@ SECRET_KEY = 'django-insecure-%y3%rvj&89!48cs9e4ky@lqog=aufajuz6bln4l$8%cikyx4)(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
+
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -38,7 +39,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    'daphne',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -49,7 +50,17 @@ INSTALLED_APPS = [
     'item.apps.ItemConfig',
     'dashboard.apps.DashboardConfig',
     'feedback.apps.FeedbackConfig',
+    'chat',
+    'channels',
 ]
+
+ASGI_APPLICATION = 'puddle.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 
@@ -94,8 +105,8 @@ DATABASES = {
         'NAME': 'postgres',          # Имя вашей базы данных
         'USER': 'postgres',              # Имя пользователя PostgreSQL
         'PASSWORD': 'myhammad',      # Пароль пользователя PostgreSQL
-        'HOST': 'localhost',           # Адрес хоста (по умолчанию localhost)
-        'PORT': '5433',                # Порт PostgreSQL (по умолчанию 5432)
+        'HOST': 'db',           # Адрес хоста (по умолчанию localhost)
+        'PORT': '5432',                # Порт PostgreSQL (по умолчанию 5432)
     }
 }
 
@@ -135,6 +146,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR/'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
