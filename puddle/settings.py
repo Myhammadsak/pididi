@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'item.apps.ItemConfig',
     'dashboard.apps.DashboardConfig',
     'feedback.apps.FeedbackConfig',
-    'chat',
+    'adminchat',
     'channels',
 ]
 

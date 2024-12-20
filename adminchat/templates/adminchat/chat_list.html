@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Admin chat{% endblock %}
+
+{% block content %}
+
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center">Chats list</h2>
+    <ul>
+        {% for room in rooms %}
+            <li class="text-center"><a href="{% url 'adminchat:admin_chat_room' room.room_name %}">{{ room.room_name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

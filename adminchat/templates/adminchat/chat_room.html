@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block content %}
+
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center" >Chat: {{ room_name }}</h2>
+
+    <div class="bg-blue-100" id="chat-log"></div>
+    <input id="chat-message-input" type="text" size="167.9">
+    <button class="mt-6 py-4 px-8 text-lg bg-blue-500 hover:bg-blue-700 rounded-xl text-white"
+            id="chat-message-submit" >Send</button>
+    <script>
+        const roomName = "{{ room_name }}";
+        const chatSocket = new WebSocket(
+            `ws://${window.location.host}/ws/chat/${roomName}/`
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').innerHTML += `<p><strong>${data.username}:</strong> ${data.message}</p>`;
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('WebSocket закрыт');
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({ message }));
+            messageInputDom.value = '';
+        };
+    </script>
+</div>
+
+{% endblock %}
