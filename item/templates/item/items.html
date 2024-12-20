@@ -30,6 +30,14 @@
 
             <hr class="my-6">
 
+            <form method="get">
+                <input id="start_price" name="start_price">
+                <input id="end_price" name="end_price">
+                <button type="submit">Search</button>
+            </form>
+
+            <hr class="my-6">
+
             <p class="font-semibold">Clear filters</p>
 
             <ul>
@@ -64,7 +72,7 @@
 
         <div class="pagination">
             <span>
-                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                Page {{ page_obj.number }} in {{ page_obj.paginator.num_pages }}
             </span>
         </div>
 

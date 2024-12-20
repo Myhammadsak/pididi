@@ -22,11 +22,17 @@ def item(request):
     categories = Category.objects.all()
     category_id = request.GET.get('category', 0)
 
+    start_price = request.GET.get('start_price')
+    end_price = request.GET.get('end_price')
+
     if category_id:
         items = items.filter(category_id=category_id)
 
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+    if start_price and end_price:
+        items = items.filter(price__range=(start_price, end_price))
 
     paginator = Paginator(items, 6)
 
@@ -46,6 +52,7 @@ def detail(request, pk):
 
     return render(request, 'item/detail.html', context={'item': item, 'related_items': related_items})
 
+
 @login_required
 def new(request):
     if request.method == 'POST':
@@ -61,8 +68,8 @@ def new(request):
     else:
         form = NewItemForm()
 
-    form = NewItemForm()
     return render(request, 'item/form.html', context={'form': form, 'title': 'New item'})
+
 
 @login_required
 def delete(request, pk):
@@ -86,6 +93,7 @@ def edit(request, pk):
         form = EditItemForm(instance=item)
 
     return render(request, 'item/form.html', context={'form': form, 'title': 'Edit item'})
+
 
 @login_required
 def buy(request, pk):
