@@ -12,6 +12,7 @@
     <button class="mt-6 py-4 px-8 text-lg bg-blue-500 hover:bg-blue-700 rounded-xl text-white"
             id="chat-message-submit" >Send</button>
     <script>
+
         const roomName = "{{ room_name }}";
         const chatSocket = new WebSocket(
             `ws://${window.location.host}/ws/chat/${roomName}/`
@@ -31,6 +32,27 @@
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({ message }));
             messageInputDom.value = '';
+        };
+
+        function sendMessage() {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value.trim();
+
+            if (message) {
+                chatSocket.send(JSON.stringify({ message }));
+                messageInputDom.value = '';
+            }
+        }
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            sendMessage();
+        };
+
+        document.querySelector('#chat-message-input').onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
         };
     </script>
 </div>
